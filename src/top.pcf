@@ -1,0 +1,5 @@
+set_io VSYNC A5
+set_io HSYNC B6
+set_io VIDEO A6
+set_io clk J3
+set_io rst B7
