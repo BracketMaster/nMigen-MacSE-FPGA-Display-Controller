@@ -4,6 +4,17 @@ A new and improved FPGA display controller compared to [this].
 **Simulation Image**
 ![Simulation Image](doc/example_output.png)
 
+**Actual Image**
+![Actual Image](doc/actual_fpga.jpg)
+Due to the limitations of the Lattice Hx8k, I was only able
+to achieve a clock of 15.55MHz instead of 15.672MHz as specified,
+with a 45/55 duty cycle.
+
+This may be why the images don't match up.
+
+I will later pull out my logic analyzer and inspect the 
+signals from the MacSE motherboard directly to confirm.
+
 ## Dependencies
  * [nMigen](https://github.com/m-labs/nmigen)
  * [yosys](https://github.com/YosysHQ/yosys)

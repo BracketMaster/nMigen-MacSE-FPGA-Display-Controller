@@ -52,22 +52,26 @@ class CRT(Elaboratable):
 
     def elaborate(self, platform):
         m = Module()
+
+        #add unique clock domain
+        m.domains.clk = ClockDomain("clk")
+
         pix_count = Signal(unsigned(self.width))
 
         valid = Signal()
 
         #pixels in one frame
         with m.If(pix_count < total_pixels):
-            m.d.sync += pix_count.eq(pix_count + 1)
+            m.d.clk += pix_count.eq(pix_count + 1)
         with m.Else():
-            m.d.sync += pix_count.eq(1)
+            m.d.clk += pix_count.eq(1)
 
         #horizontal index in current frame
         h_count = Signal(unsigned(self.width))
         with m.If(h_count < h_res - 1):
-            m.d.sync += h_count.eq(h_count + 1)
+            m.d.clk += h_count.eq(h_count + 1)
         with m.Else():
-            m.d.sync += h_count.eq(0)
+            m.d.clk += h_count.eq(0)
 
         #vertical index in current frame
         v_count = Signal(unsigned(self.width))
@@ -158,7 +162,7 @@ if __name__ == "__main__":
         print("SIMULATING...")
         dut = CRT(sim=True)
         sim = Simulator(dut)
-        sim.add_clock(1/(15.6672e6))
+        sim.add_clock(1/(15.6672e6), domain="clk")
         sim.add_sync_process(draw_single_frame)
 
         if(args.write_VCD == 'True'):

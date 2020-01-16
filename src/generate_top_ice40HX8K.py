@@ -15,17 +15,16 @@ class Top(Elaboratable):
         m = Module()
 
         #add top clock domain
-        t_c = ClockDomain("top_clock")
-        m.domains += t_c
 
         #add PLL
         m.submodules += Instance("pll",
-            i_clock_in = ClockSignal(domain="top_clock"),
-            o_clock_out = ClockSignal(domain="sync"),
+            i_clock_in = ClockSignal(domain="sync"),
+            o_clock_out = ClockSignal(domain="clk"),
         )
 
         #add CRT driver
         m.submodules.CRT = self.CRT
+        #m.submodules += DomainRenamer({"clk": "input"})(self.CRT)
         m.d.sync += self.HSYNC.eq(self.CRT.HSYNC)
         m.d.sync += self.VIDEO.eq(self.CRT.VIDEO)
         m.d.sync += self.VSYNC.eq(self.CRT.VSYNC)
